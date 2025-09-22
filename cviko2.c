@@ -46,5 +46,33 @@ int main()
 
     printf("Power: %d\n", power);
 
+    int y = 16;
+    while (y >= -16)
+    {
+        int x = -16;
+        while (x <= 16)
+        {
+            if (x == 0 && y == 0)
+            {
+                printf("+");
+            }
+            else if (x == 0)
+            {
+                printf("|");
+            }
+            else if (y == 0)
+            {
+                printf("-");
+            }
+            else {
+                printf(" ");
+            }
+            x++;
+        }
+        printf("\n");
+        --y;
+    }
+    
+
     return 0;
 }
