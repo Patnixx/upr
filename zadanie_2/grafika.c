@@ -5,10 +5,6 @@ int main() {
     int a = 0; //x-osa
     int b = 0; //y-osa
 
-    /*scanf("Vyber tvar (0-9): %d \n", &obrazec);
-    scanf("Zadaj sirku (a): %d \n", &a);
-    scanf("Zadaj vysku (b): %d \n", &b);*/
-
     scanf("%d%d%d", &obrazec, &a, &b);
     
     //printf("Obrazec: %d\n Sirka: %d \n Vyska: %d \n", obrazec, a, b);
@@ -40,7 +36,6 @@ int main() {
             {
                 if(y == b || y == 1)
                 {
-                    //printf("(x: %d  y: %d a: %d b: %d)", x, y, a, b);
                     printf("x");
                 }
                 else if (y < b && y != 1)
@@ -75,7 +70,6 @@ int main() {
             {
                 if(y == b || y == 1)
                 {
-                    //printf("(x: %d  y: %d a: %d b: %d)", x, y, a, b);
                     printf("x");
                 }
                 else if (y < b && y != 1)
@@ -112,7 +106,6 @@ int main() {
             {
                 printf(" ");
             }
-            
         }
         break;
 
@@ -126,7 +119,6 @@ int main() {
             }
             printf("x \n");
         }
-        
         break;
 
     case 5:
@@ -245,49 +237,37 @@ int main() {
         {
             printf("x \n");
         }
-        
         break;
 
-    /*case 9:
-        y = b;
-        num = 0;
-        while (y > 0)
+    case 9:
+        //cisla v stlpci
+        y = 0;
+        while (y < b) 
         {
-            int x = a;
-            while (x > 0)
+            int x = 0;
+            while (x < a) 
             {
-                if(y == b || y == 1)
-                {
-                    //printf("(x: %d  y: %d a: %d b: %d)", x, y, a, b);
+                if (y == 0 || y == b - 1) {
                     printf("x");
                 }
-                else if (y < b && y != 1)
-                {
-                    if(x == a || x == 1) 
-                    {
-                        printf("x");
-                    }
-                    else 
-                    {
-                        if(x == (a-1))
-                            printf("%d", num);
-                        num = num + (b-2);
-                        if (num > 9)
-                            num = 0;
-                        printf("%d", num);
-                    }
+                
+                else if(x == 0 || x == a - 1) {
+                    printf("x");
                 }
-                else 
-                {
-                    printf(" ");
+
+                else {
+                    int riadok = y - 1;
+                    int stlpec = x - 1;
+                    int poloha = stlpec * (b-2) + riadok;
+                    int cislo = poloha % 10; //%10 lebo zvysok je to cislo co tam ma byt
+                    printf("%d", cislo);
                 }
-                x--;
+                x++;
             }
-            num++;
-            y--;
             printf("\n");
+            y++;
         }
-        break;*/
+        break;
 
     default:
         printf("Neznamy obrazec \n");
