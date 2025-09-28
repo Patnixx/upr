@@ -1,5 +1,8 @@
 
-            if(z != a)
-                num = 0;
-            y--;
-        }*/
+            printf("x");
+            int j = 0;
+            while (j < (a - 1))
+            {
+                printf("C");
+                j++;
+            }

@@ -21,7 +21,7 @@ int main() {
                 printf("x");
                 x--;
             }
-            printf("x \n");
+            printf("x\n");
             b--;
         }
         break;
@@ -99,38 +99,48 @@ int main() {
     
     case 3:
     //diagonala RD
-        for (int i = 0; i < a; i++)
+        for (int i = 0; i < (a-1); i++)
         {
-            printf("x \n");
+            printf("x\n");
             for (int j = -1; j < i; j++)
             {
                 printf(" ");
             }
         }
+        printf("x\n");
         break;
 
     case 4:
     //diagonala LD
-        for (int i = 0; i < a; i++)
+        int x = a;
+        int m = 0;
+        while (x > 0)
         {
-            for (int j = i; j < a; j++)
+            for (int i = 1; i < x; i++)
             {
                 printf(" ");
             }
-            printf("x \n");
+            printf("x");
+            for(int j = 0; j < m; j++)
+            {
+                printf(" "); //medzera vpravo
+            }
+            printf("\n");
+            m++;
+            x--;
         }
         break;
 
     case 5:
         //trojuholnik
-        int x = a;
+        x = a;
         int x_num = (a*2) - 1;
         int medzera = -1;
         while (x > 0)
         {
             for (int i = 1; i < x; i++)
             {
-                printf(" ");
+                printf(" "); //medzery nad lavim ramenom
             }
             if(x > 1)
             {
@@ -139,16 +149,25 @@ int main() {
                 {
                     for (int j = 0; j < medzera; j++)
                     {
-                        printf(" ");
+                        printf(" "); // medzera vo vnutri
                     }
                 }
                 if(x == a)
                 {
+                    for (int i = 1; i < x; i++)
+                    {
+                        printf(" "); //medzery v prvom riadku vpravo
+                    }
                     printf("\n");
                 }
                 else
                 {
-                    printf("x\n");
+                    printf("x");
+                    for (int i = 1; i < x; i++)
+                    {
+                        printf(" "); //medzery nad pravim ramenom
+                    }
+                    printf("\n");
                 }
                 medzera = medzera + 2;
             }
@@ -185,7 +204,8 @@ int main() {
                     {
                         printf("x");
                     }
-                    else{
+                    else if(x > stred)
+                    {
                         printf(" ");
                     }
                 }
@@ -233,9 +253,25 @@ int main() {
             y--;
         }
 
-        for(int i = 0; i <noha_p; i++)
+        int i = 0;
+        while (i < noha_p)
         {
-            printf("x \n");
+            if(i == noha_p - 1)
+            {
+                putchar('x');
+            }
+            else
+            {
+                printf("x");
+                int j = 0;
+                while (j < (a - 1))
+                {
+                    printf(" ");
+                    j++;
+                }
+            }
+            printf("\n");
+            i++;
         }
         break;
 
@@ -270,7 +306,7 @@ int main() {
         break;
 
     default:
-        printf("Neznamy obrazec \n");
+        printf("Neznamy obrazec\n");
         break;
     }
 
