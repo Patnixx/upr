@@ -218,7 +218,7 @@ int main() {
 
     case 7:
         //pismeno P
-        /*int zvysok_p = b%2;
+        int zvysok_p = b%2;
         int stred_p = (b / 2) + zvysok_p;
         int noha_p = b - stred_p;
         y = stred_p;
@@ -256,50 +256,15 @@ int main() {
         int i = 0;
         while (i < noha_p)
         {
-            if(i == noha_p - 1)
-            {
-                putchar('x');
-            }
-            else
-            {
                 printf("x");
                 int j = 0;
-                while (j < (a - 1))
+                while (j < a - 1)
                 {
                     printf(" ");
                     j++;
                 }
-            }
             printf("\n");
             i++;
-        }*/
-
-        for (int y = b; y > 0; y--)
-        {
-            for (int x = a; x > 0; x--)
-            {
-                if (y == b || y == (b / 2) + (b % 2))
-                {
-                    printf("x");
-                }
-                else if (y < b && y != 1)
-                {
-                    if (x == a || ((x == 1) && (y > ((b / 2) + b % 2))))
-                    {
-                        printf("x");
-                    }
-                    else
-                    {
-                        printf(" ");
-                    }
-                }
-                else
-                {
-                    if(x == a)
-                        printf("x");    
-                }
-            }
-            printf("\n");
         }
         break;
 
