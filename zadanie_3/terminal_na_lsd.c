@@ -1,6 +1,8 @@
 #include "drawing.h"
 #include <stdio.h>
 
+//gcc terminal_na_lsd.c -o terminal_na_lsd
+
 void pick_color(int color)
 {
     switch (color)
@@ -42,7 +44,7 @@ void cross_line(int length)
             move_right();
 
             //black/blank pixel
-            set_black_color();
+            reset_color();
             draw_pixel();
             move_right();
         }
@@ -142,71 +144,311 @@ void flower_field(int rows, int cols)
     }
 }
 
+//dufam ze mas rad dragon ball ;) (v zivote som to nevidel) 
+
+void clear_body()
+{
+    for(int i = 0; i < 5; i++)
+    {
+        move_to(i+5, 1);
+        for(int j = 0; j < 6; j++)
+        {
+            reset_color();
+            draw_pixel();
+            move_right();
+        }
+    }
+    move_to(1, 1);
+}
+
+void body_frame1()
+{
+    move_to(5, 3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+
+    move_to(6, 2);
+    for (int i = 0; i < 4; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+
+    move_to(7, 2);
+    set_yellow_color();
+    draw_pixel();
+    move_right();
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    set_yellow_color();
+    draw_pixel();
+
+    move_to(8, 1);
+    draw_pixel();
+    move_to(8,3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    move_right();
+    set_yellow_color();
+    draw_pixel();
+    
+    move_to(9,3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+}
+
+void body_frame2()
+{
+    move_to(5, 3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+
+    move_to(6, 2);
+    for (int i = 0; i < 4; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+
+    move_to(7, 2);
+    set_yellow_color();
+    draw_pixel();
+    move_right();
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    set_yellow_color();
+    draw_pixel();
+    move_right();
+    draw_pixel();
+
+    move_to(8,3);
+    draw_pixel();
+    move_right();
+    draw_pixel();
+
+    move_to(9,3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+}
+
+void body_frame3()
+{
+    move_to(5, 3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+
+    move_to(6, 2);
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    set_yellow_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    
+    move_to(7, 2);
+    for (int i = 0; i < 3; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    
+
+    move_to(8,3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    set_yellow_color();
+    draw_pixel();
+
+    move_to(9,3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+}
+
+void body_frame4()
+{
+    move_to(5, 3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    move_right();
+    set_yellow_color();
+    draw_pixel();
+
+    move_to(6, 2);
+    set_red_color();
+    draw_pixel();
+    move_right();
+    set_yellow_color();
+    for (int i = 0; i < 3; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+
+    move_to(7,3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    set_yellow_color();
+    move_right();
+    draw_pixel();
+
+    move_to(8,3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    
+    move_to(9,3);
+    set_red_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+}
+
 void goku()
 {
-    //hair
+    //hair+face
     move_to(1, 2);
+    for (int i = 0; i < 3; i++)
+    {
+        set_blue_color();
+        draw_pixel();
+        move_right();
+        reset_color();
+        draw_pixel();
+        move_right();
+    }
+    move_to(2, 2);
+    set_blue_color();
+    for (int i = 0; i < 4; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    move_to(3, 2);
+    set_blue_color();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
+    set_yellow_color();
+    draw_pixel();
+    move_to(4, 2);
     set_blue_color();
     draw_pixel();
     move_right();
-    draw_pixel();
-    move_to(2, 1);
-    draw_pixel();
-    move_right();
-
-    //face
     set_yellow_color();
-    draw_pixel();
+    for (int i = 0; i < 2; i++)
+    {
+        draw_pixel();
+        move_right();
+    }
 
-    //neck
-    move_down();
+    //legs
+    move_to(10,2);
     set_red_color();
     draw_pixel();
+    move_to(10,5);
+    draw_pixel();
+    move_to(11,1);
+    draw_pixel();
     move_right();
-    set_yellow_color();
+    draw_pixel();
+    move_to(11,5);
+    draw_pixel();
+    move_right();
+    draw_pixel();
+    move_to(12,1);
+    draw_pixel();
+    move_to(12,6);
     draw_pixel();
 
     //body
-    set_red_color();
-    move_to(4, 1);
-    draw_pixel();
-    move_right();
-    set_yellow_color();
-    draw_pixel();
-    move_right();
-    draw_pixel();
-    move_right();
-    set_yellow_color();
-    draw_pixel();
-
-    //legs
-    move_to(5, 2);
-    set_red_color();
-    draw_pixel();
-    move_to(6,1);
-    draw_pixel();
-    move_right();
-    move_right();
-    draw_pixel();
-    move_down();
+    body_frame1();
+    animate_ms(500);
+    clear_body();
+    body_frame2();
+    animate_ms(500);
+    clear_body();
+    body_frame3();
+    animate_ms(500);
+    clear_body();
+    body_frame4();
+    animate_ms(500);
 
     //kamehameha
-    char kamehameha[] = "KAMEHAMEHA!!!";
-    move_to(3, 5);
+    move_to(6, 6);
     
-    for(int i = 0; i < 13; i++)
+    for(int i = 0; i < 60; i++)
     {
-        reset_color();
-        printf("%c", kamehameha[i]);
         set_blue_color();
-        move_down();
-        move_left();
         draw_pixel();
         move_right();
-        move_up();
-        animate();
+        draw_pixel();
+        move_right();
+        animate_ms(50);
     }
-    move_to(10, 1);
+
+
+    move_to(13,10); //move kvoli textu v terminali
+
 }
 
 int main() {
@@ -214,8 +456,8 @@ int main() {
     clear_screen();
 
     //input na kelvin
-    int drawing = 4;
-    //scanf("%d\n", &drawing);
+    int drawing = 0;
+    scanf("%d\n", &drawing);
 
 
     switch (drawing)
@@ -225,18 +467,21 @@ int main() {
             break;
         case 1:
             stairs(5, 1);
-            move_to(4, 7);
+            move_to(1, 5);
             stairs(11, 2);
-            move_to(7, 12);
+            move_to(1, 9);
             stairs(5, 4);
+            move_to(15, 1);
             break;
         case 2:
             flower(7, 12, 1, 1);
-            flower(5, 10, 9, 1);
-            flower(3, 8, 15, 1);
+            flower(5, 10, 15, 1);
+            flower(3, 8, 9, 1);
+            move_to(15, 1);
             break;
         case 3:
-            flower_field(4, 5);
+            flower_field(2, 8);
+            move_to(15, 1);
             break;
         case 4:
             goku();
