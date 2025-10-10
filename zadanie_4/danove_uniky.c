@@ -62,28 +62,112 @@ int main(){
             counts[width]++;
         }
     }
+
+    int max_count = 0;
     for(int j = 0; j < 9; j++)
     {
-        printf("%d ", min_num + j);
-        for(int k = 0; k < counts[j]; k++)
+        if(counts[j] > max_count)
         {
-            printf("#");
+            max_count = counts[j];
         }
-        printf("\n");
     }
-    if(invalid > 0)
+
+    if(graf == 'h')
     {
-        printf("invalid: ");
-        for(int l = 0; l < invalid; l++)
+        for(int j = 0; j < 9; j++)
         {
-            printf("#");
+
+            int num = min_num;
+            int max = max_num;
+            int min_digits = 0;
+            int max_digits = 0;
+            while(num != 0)
+            {
+                num /= 10;
+                min_digits++;
+            }
+            while(max != 0)
+            {
+                max /= 10;
+                max_digits++;
+            }
+
+            if((min_digits < max_digits) || (min_digits == max_digits && (min_num + j) < max_num))
+            {
+                printf(" %d ", min_num + j);
+            }
+            else
+            {
+                printf("%d ", min_num + j);
+            }
+            //printf("%d ", min_num + j);
+            for(int k = 0; k < counts[j]; k++)
+            {
+                printf("#");
+            }
+            printf("\n");
         }
-        printf("\n");
+        if(invalid > 0)
+        {
+            printf("invalid: ");
+            for(int l = 0; l < invalid; l++)
+            {
+                printf("#");
+            }
+            printf("\n");
+        }
+    }
+    else
+    {
+        int y = 0;
+        if(invalid > max_count)
+        {
+            y = invalid+1;
+        }
+        else
+        {
+            y = max_count+1;
+        }
+        while (y > 0)
+        {
+            int x = 0;
+            while(x < 10)
+            {
+                if(x == 0)
+                {
+                    if(invalid >= y)
+                    {
+                        printf("#");
+                        invalid--;
+                    }
+                    else
+                    {
+                        printf(" ");
+                    }
+                }
+                else if(counts[x-1] == y)
+                {
+                    printf("#");
+                    counts[x-1]--;
+                }
+                else
+                {
+                    printf(" ");
+                }
+                x++;
+            }
+            printf("\n");
+            y--;
+        }
+    
+        printf("i");
+        for(int j = 0; j < 9; j++)
+        {
+            printf("%d", min_num + j);
+        }
     }
 }
 
 //FIXME - test-invalid-mode -> vypne kod po zlej hodnote 
-//FIXME - test-cent -> medzery pred menejciferne cisla
-//FIXME - test-large-range ->   -||-
-//FIXME - dokoncit vertikal
+//FIXME - medzery pred mensimi cislami
 //FIXME - upravit to na funkcie
