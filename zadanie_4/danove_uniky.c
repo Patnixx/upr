@@ -76,37 +76,34 @@ int main(){
     {
         for(int j = 0; j < 9; j++)
         {
-
-            int num = min_num;
+            //whitespaces
             int max = max_num;
-            int min_digits = 0;
+            int current_digits = 0;
             int max_digits = 0;
-            while(num != 0)
+            for(int i = max; i > 0; i /= 10)
             {
-                num /= 10;
-                min_digits++;
-            }
-            while(max != 0)
-            {
-                max /= 10;
                 max_digits++;
             }
+            for(int k = min_num+j; k > 0; k /= 10)
+            {
+                current_digits++;
+            }
+            int spaces = max_digits - current_digits;
+            for(int s = 0; (s < spaces) && min_num != 0; s++)
+            {
+                printf(" ");
+            }
+            printf("%d ", min_num + j);
 
-            if((min_digits < max_digits) || (min_digits == max_digits && (min_num + j) < max_num))
-            {
-                printf(" %d ", min_num + j);
-            }
-            else
-            {
-                printf("%d ", min_num + j);
-            }
-            //printf("%d ", min_num + j);
+            //values
             for(int k = 0; k < counts[j]; k++)
             {
                 printf("#");
             }
             printf("\n");
         }
+
+        //invalid values
         if(invalid > 0)
         {
             printf("invalid: ");
@@ -117,16 +114,16 @@ int main(){
             printf("\n");
         }
     }
-    else
+    else if(graf == 'v')
     {
         int y = 0;
         if(invalid > max_count)
         {
-            y = invalid+1;
+            y = invalid;
         }
         else
         {
-            y = max_count+1;
+            y = max_count;
         }
         while (y > 0)
         {
@@ -169,5 +166,4 @@ int main(){
 }
 
 //FIXME - test-invalid-mode -> vypne kod po zlej hodnote 
-//FIXME - medzery pred mensimi cislami
 //FIXME - upravit to na funkcie
