@@ -1,80 +1,42 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-void input_values()
+void input_values(char *graf, int *num_of_nums, int *min_num, int counts[9], int *invalid)
 {
-    char graf;
-    scanf("%c", &graf);
+    scanf(" %c", graf);
 
-    if(graf != 'h' && graf != 'v')
+    if(*graf != 'h' && *graf != 'v' && *graf != 'H' && *graf != 'V')
     {
         printf("Neplatny mod vykresleni\n");
+        exit(0); //pekna picovina
     }
 
-    int num_of_nums = 0;
-    int num_range = 0;
-    scanf("%d", &num_of_nums);
-    scanf("%d", &num_range);
-    //printf("%c %d %d", graf, num_of_nums, num_range);
-
-    int values[9] = {};
-    for(int i = 0; i < num_of_nums; i++)
-    {
-        int value = 0;
-        scanf("%d", &value);
-        values[i] = value;
-    }
-
-    /*for(int j = 0; j < 10; j++)
-    {
-        printf("%d ", values[j]);
-    }*/
-}
-
-int main(){
-    char graf;
-    scanf("%c", &graf);
-
-    if(graf != 'h' && graf != 'v')
-    {
-        printf("Neplatny mod vykresleni\n");
-    }
-
-    int num_of_nums = 0;
-    int min_num = 0;
-    int invalid = 0;
-    scanf("%d", &num_of_nums);
-    scanf("%d", &min_num);
-    int max_num = min_num + 8;
+    scanf("%d", num_of_nums);
+    scanf("%d", min_num);
+    int max_num = *min_num + 8;
     //printf("%c %d %d", graf, num_of_nums, min_num);
 
-    int counts[9] = {0};
-    for(int i = 0; i < num_of_nums; i++)
+    for(int i = 0; i < *num_of_nums; i++)
     {
         int value = 0;
         scanf("%d", &value);
-        if(value < min_num || value > max_num)
+        if(value < *min_num || value > max_num)
         {
-            invalid++;
+            (*invalid)++;
         }
-        else if (value >= min_num && value <= max_num)
+        else if (value >= *min_num && value <= max_num)
         {
-            int width = value - min_num;
+            int width = value - *min_num;
             counts[width]++;
         }
     }
+}
 
-    int max_count = 0;
+void print_horizontal(int min_num, int counts[9], int invalid)
+{
+    int max_num = min_num + 8;
+
     for(int j = 0; j < 9; j++)
-    {
-        if(counts[j] > max_count)
-        {
-            max_count = counts[j];
-        }
-    }
-
-    if(graf == 'h')
-    {
-        for(int j = 0; j < 9; j++)
         {
             //whitespaces
             int max = max_num;
@@ -113,10 +75,12 @@ int main(){
             }
             printf("\n");
         }
-    }
-    else if(graf == 'v')
-    {
-        int y = 0;
+        
+}
+
+void print_vertical(int min_num, int counts[9], int invalid, int max_count)
+{
+    int y = 0;
         if(invalid > max_count)
         {
             y = invalid;
@@ -162,8 +126,32 @@ int main(){
         {
             printf("%d", min_num + j);
         }
-    }
 }
 
-//FIXME - test-invalid-mode -> vypne kod po zlej hodnote 
-//FIXME - upravit to na funkcie
+int main(){
+    char graf;
+    int num_of_nums = 0;
+    int min_num = 0;
+    int invalid = 0;
+    int counts[9] = {0};
+
+    input_values(&graf, &num_of_nums, &min_num, counts, &invalid);
+
+    int max_count = 0;
+    for(int j = 0; j < 9; j++)
+    {
+        if(counts[j] > max_count)
+        {
+            max_count = counts[j];
+        }
+    }
+
+    if(graf == 'h')
+    {
+        print_horizontal(min_num, counts, invalid);
+    }
+    else if(graf == 'v')
+    {
+        print_vertical(min_num, counts, invalid, max_count);
+    }
+}
