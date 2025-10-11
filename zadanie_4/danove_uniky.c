@@ -8,7 +8,7 @@ void input_values(char *graf, int *num_of_nums, int *min_num, int counts[9], int
     if(*graf != 'h' && *graf != 'v' && *graf != 'H' && *graf != 'V')
     {
         printf("Neplatny mod vykresleni\n");
-        exit(0); //pekna picovina
+        exit(1); //pekna picovina
     }
 
     scanf("%d", num_of_nums);
@@ -55,7 +55,11 @@ void print_horizontal(int min_num, int counts[9], int invalid)
             {
                 printf(" ");
             }
-            printf("%d ", min_num + j);
+            printf("%d", min_num + j);
+            if(counts[j] > 0)
+            {
+                printf(" "); //kelvin type shit
+            }
 
             //values
             for(int k = 0; k < counts[j]; k++)
@@ -126,6 +130,7 @@ void print_vertical(int min_num, int counts[9], int invalid, int max_count)
         {
             printf("%d", min_num + j);
         }
+        printf("\n");
 }
 
 int main(){
