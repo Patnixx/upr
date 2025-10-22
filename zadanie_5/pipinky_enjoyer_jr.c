@@ -1,11 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+/* 
+- pre bonus treba odkomentovat riadky: 17, 136, 143, 182, 183, 193, 198, treba potom zakomentovat pri znakoch tie pod nimi;
+- je to bud zmena znaku v gride z '.' na ' ' alebo uz samotna funkcia a sleep
+- pri animacii to zobrazi aj Z aj O ked pipinka kresli ale ako hovori kodex: ked to funguje, nema sa toho nikto chytat
+- enjoy :)
+*/
 
 char* initGrid(int *rows, int *cols)
 {
     char *grid = (char *) malloc((*rows) * (*cols) * sizeof(char));
     for (int i = 0; i < ((*rows) * (*cols)); i++)
     {
+        //grid[i] = ' ';
         grid[i] = '.';
     }
 
@@ -100,22 +109,20 @@ void turtleMove(char *turtle, int *turtles, int cols, int rows)
 void turtleRotate(char *turtle, int *turtles, char command)
 {
     char turns[] = {'r', 'd', 'l', 'u'};
-    int nTurns = 4;
+    int num_of_turns = 4;
 
     for (int i = 0; i < *turtles; i++)
     {
-        // nájdeme index aktuálneho smeru
         char current = turtle[i * 3 + 2];
         int index = 0;
-        while (index < nTurns && turns[index] != current) index++;
-
-        if (index < nTurns)
+        while (index < num_of_turns && turns[index] != current) //prechadza to pipinky kým nenajde jej smer
         {
-            if (command == 'r')
-                turtle[i * 3 + 2] = turns[(index + 1) % nTurns];  // posun doprava
-            else if (command == 'l')
-                turtle[i * 3 + 2] = turns[(index + nTurns - 1) % nTurns];  // posun doľava
+            index++;
         }
+        if (command == 'r')
+            turtle[i * 3 + 2] = turns[(index + 1) % num_of_turns];
+        else if (command == 'l')
+            turtle[i * 3 + 2] = turns[(index + num_of_turns - 1) % num_of_turns];
     }
 }
 
@@ -126,13 +133,38 @@ void turtleDraw(char *grid, char *turtle, int *turtles, int cols)
         int row = turtle[i * 3];
         int col = turtle[i * 3 + 1];
         char current = grid[row * cols + col];
+        //if(current == ' ')
         if(current == '.')
         {
             grid[row * cols + col] = 'o';
         }
         else if(current == 'o')
         {
+            //grid[row * cols + col] = ' ';
             grid[row * cols + col] = '.';
+        }
+    }
+}
+
+void pipinka(char *grid, int rows, int cols, char *turtle, int *turtles)
+{
+    for (int i = 0; i < (rows * cols); i++)
+    {
+        for (int j = 0; j < *turtles; j++)
+        {
+            if (i == turtle[j * 3] * cols + turtle[j * 3 + 1])
+            {
+                putchar('Z');
+            }
+        }
+        if (grid[i] != 'Z')
+        {
+            putchar(grid[i]);
+        }
+
+        if ((i + 1) % cols == 0)
+        {
+            putchar('\n');
         }
     }
 }
@@ -141,50 +173,37 @@ int main() {
     int rows, cols = 0;
     int turtles = 1;
     scanf("%d%d", &rows, &cols);
-    //printf("\n");
 
     char *grid = initGrid(&rows, &cols);
-    //printGrid(grid, rows, cols);
     char *turtle = initTurtles(&turtles);
-    //turtle = addTurtles(&turtles); 
     
     while(1)
     {
+        //usleep(150000);
+        //printf("\x1b[2J\x1b[1;1F");
         char command;
         scanf(" %c", &command);
         if(command == 'r' || command == 'l')
         {
             turtleRotate(turtle, &turtles, command);
-            printGrid(grid, rows, cols);
-            printTurtles(turtle, turtles);
-            printf("\n");
         }
         else if(command == 'o')
         {
             turtleDraw(grid, turtle, &turtles, cols);
-            printGrid(grid, rows, cols);
-            printTurtles(turtle, turtles);
-            printf("\n");
+            //pipinka(grid, rows, cols, turtle, &turtles);
         }
         else if(command == 'm')
         {
             turtleMove(turtle, &turtles, cols, rows);
-            printGrid(grid, rows, cols);
-            printTurtles(turtle, turtles);
-            printf("\n");
+            //pipinka(grid, rows, cols, turtle, &turtles);
         }
         else if(command == 'f' && turtles < 3)
         {
             turtle = addTurtles(&turtles, turtle);
-            printGrid(grid, rows, cols);
-            printTurtles(turtle, turtles);
-            printf("\n");
         }
         else if(command == 'x')
         {
             printGrid(grid, rows, cols);
-            printTurtles(turtle, turtles);
-            printf("\n");
             break;
         }
     }
