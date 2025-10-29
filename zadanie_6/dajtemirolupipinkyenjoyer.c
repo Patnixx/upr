@@ -175,7 +175,7 @@ int main() {
     struct Statistic stat;
     struct Statistic normalised;
 
-    char numOfLinesStr[16] = "";
+    char numOfLinesStr[51] = "";
     if (fgets(numOfLinesStr, sizeof(numOfLinesStr), stdin) == NULL) //ziadny ciselny vstup (test1) 
         {
             return 0;
