@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 struct Stock {
     int day;
@@ -99,6 +100,60 @@ void normalise_trades(char *token, char *trades_norm) { //vjebanie podtrzitka do
     trades_norm[pos] = '\0';
 }
 
+void create_graph(int lines, struct Stock *line, char *stock){ //rychlejsie by som to vykreslil v ms paint
+    FILE *f = fopen("graf.svg", "w");
+    if (!f) {
+        perror("Nepodarilo sa otvoriť súbor graf.svg");
+    }
+
+    int svg_width = lines * 50;
+    int pos_x = 30;            
+    int pos_y = 512;   
+    int width = 25;
+    int height = 100;
+    int gap = 18;              
+    float scale = 15.0f; //nech to neni velkosti pindiku
+
+    fprintf(f, "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"1024\">\n", svg_width);
+    fprintf(f, "<rect width=\"100%%\" height=\"100%%\" fill=\"#22262a\"/>\n"); //cierne pozadicko
+
+    for (int i = 0; i < lines; i++) {
+        if (strcmp(line[i].name, stock) != 0) continue;
+
+        float diff = line[i].diff;
+        float absdiff = diff < 0 ? -diff : diff; //aby to bolo roznych velkosti
+        int h = (int)(absdiff * scale);
+        if (h < 2) h = 2;       //minimalna vyska
+        if (h > 900) h = 900;   //maximalna vyska
+
+        height = h;
+        int x = pos_x;
+        int y;
+        char color[6];
+
+        if (diff > 0.0f) {
+            y = pos_y - height;
+            strcpy(color, "green");
+        } 
+        else if (diff < 0.0f) {
+            y = pos_y;
+            strcpy(color, "red");
+        } 
+        else {
+            y = pos_y - 3;
+            height = 6;
+            strcpy(color, "blue");
+        }
+
+        fprintf(f, "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"%s\" rx=\"1\" />\n", x, y, width, height, color);
+        pos_x += width + gap;
+    }
+
+    fprintf(f, "</svg>\n");
+    fclose(f);
+    printf("SVG súbor bol vytvorený/upravený: graf.svg\n");
+}
+
 int main(int argc, char *argv[]) {
     //vars
     char stock[20];
@@ -115,7 +170,6 @@ int main(int argc, char *argv[]) {
 
     strcpy(stock, argv[1]);
     int lines = atoi(argv[2]);
-
     struct Stock *temp = realloc(line,lines * params * sizeof(struct Stock));
     line = temp;
     
@@ -154,5 +208,7 @@ int main(int argc, char *argv[]) {
 
         token = strtok(NULL, ",");
     }
+
+    //create_graph(lines, line, stock);
     print_whole(stock, lines, line);
 }
