@@ -2,6 +2,7 @@
 #define MECHS_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 
 #define WINDOW_WIDTH 600
@@ -22,14 +23,40 @@ typedef struct {
     int x;
     int y;
 } Block;
+typedef enum {
+    MENU,
+    GAME,
+    SETTINGS,
+    GAMEOVER,
+    QUIT
+} State;
+
+typedef struct {
+    SDL_Rect rect;
+    SDL_Color color;
+    const char* text;
+} MenuButton;
+
+typedef struct {
+    SDL_Event left;
+    SDL_Event right;
+    SDL_Event down;
+    SDL_Event rotate;
+    SDL_Event drop;
+    SDL_Event pause;
+    char theme;
+} Controls;
 
 extern Cell board[CELLS_Y][CELLS_X];
 extern Block current;
 extern Block next;
-extern int linesCleared;
 extern int score;
+extern MenuButton playBtn;
+extern MenuButton settingsBtn;
+extern MenuButton quitBtn;
+extern MenuButton backBtn;
 
-
+//game mechs
 void initCells(void);
 void spawnBlock(void);
 bool canMove(Block* t, int newX, int newY);
@@ -43,5 +70,10 @@ void renderBoard(SDL_Renderer* renderer);
 void renderCurrent(SDL_Renderer* renderer);
 void showNextBlock(SDL_Renderer* renderer, int startX, int startY);
 void checkLines(void);
+
+//menu mechs
+void renderButton(SDL_Renderer* r, TTF_Font* font, MenuButton* b);
+bool buttonClicked(MenuButton* b, SDL_Event* e);
+void renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, SDL_Color color, int x, int y);
 
 #endif
