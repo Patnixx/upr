@@ -25,26 +25,26 @@ endif
 WARNINGS := -Wall -Wextra -Wpedantic
 COMMON   := $(WARNINGS) -I$(INC_DIR)
 
-# Debug flags – must be in both compile and link!
+# Debug
 DEBUG_FLAGS      := -g -fsanitize=address
 DEBUG_LINK_FLAGS := -fsanitize=address -static-libasan  # static-libasan only on link
 
-# Release flags
+# Release
 RELEASE_FLAGS := -O2
 
 # Zdroje
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(SRCS:.c=.o)
 
-# Default target
+# Default
 all: debug
 
-# Debug build
+# Debug
 debug: CFLAGS  := $(COMMON) $(DEBUG_FLAGS) $(SDL_CFLAGS)
 debug: LDFLAGS := $(DEBUG_LINK_FLAGS) $(SDL_LIBS)
 debug: $(TARGET)
 
-# Release build
+# Release
 release: CFLAGS  := $(COMMON) $(RELEASE_FLAGS) $(SDL_CFLAGS)
 release: LDFLAGS := $(SDL_LIBS)
 release: $(TARGET)

@@ -8,7 +8,7 @@
 #include "../include/audio.h"
 #include "../include/highscore.h"
 
-int main(int argc, char* argv[]) {
+int main() {
 
     SDL_SetHint(SDL_HINT_SHUTDOWN_DBUS_ON_QUIT, "1"); //fake leaks fix
     SDL_Init(SDL_INIT_VIDEO);
