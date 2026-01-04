@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
+#include "settings.h"
 
 #define WINDOW_WIDTH 600
 #define WINDOW_HEIGHT 800
@@ -59,7 +60,7 @@ void drawCell(SDL_Renderer* renderer, int x, int y, SDL_Color color);
 void renderBoard(SDL_Renderer* renderer);
 void renderCurrent(SDL_Renderer* renderer);
 void showNextBlock(SDL_Renderer* renderer, int startX, int startY);
-void checkLines(void);
+void checkLines(Settings settings);
 
 //menu mechs
 void renderButton(SDL_Renderer* r, TTF_Font* font, MenuButton* b);

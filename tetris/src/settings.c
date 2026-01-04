@@ -11,10 +11,12 @@ Settings settings;
 void loadSettings(Settings* settings, const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file) {
-        char inputStr[8];
-        char themeStr[8];
+        char inputStr[16];
+        char themeStr[16];
+        char soundStr[16];
         fscanf(file, "%s\n", inputStr);
-        fscanf(file, "%s", themeStr);
+        fscanf(file, "%s\n", themeStr);
+        fscanf(file, "%s", soundStr);
 
         if (strcmp(inputStr, "ARROWS") == 0) {
             settings->input = ARROWS;
@@ -28,11 +30,18 @@ void loadSettings(Settings* settings, const char* filename) {
             settings->theme = LIGHT;
         }
 
+        if (strcmp(soundStr, "SOUND_ON") == 0) {
+            settings->sound = SOUND_ON;
+        } else {
+            settings->sound = SOUND_OFF;
+        }
+
         fclose(file);
     } else {
         // Default settings
         settings->input = ARROWS;
         settings->theme = DARK;
+        settings->sound = SOUND_ON;
     }
 }
 
@@ -44,8 +53,9 @@ void loadSettings(Settings* settings, const char* filename) {
 void saveSettings(Settings* settings, const char* filename) {
     FILE* file = fopen(filename, "w");
     if (file) {
-        char inputStr[8];
-        char themeStr[8];
+        char inputStr[16];
+        char themeStr[16];
+        char soundStr[16];
 
         if (settings->input == ARROWS) {
             strcpy(inputStr, "ARROWS");
@@ -59,8 +69,15 @@ void saveSettings(Settings* settings, const char* filename) {
             strcpy(themeStr, "LIGHT");
         }
 
+        if (settings->sound == SOUND_ON) {
+            strcpy(soundStr, "SOUND_ON");
+        } else {
+            strcpy(soundStr, "SOUND_OFF");
+        }
+
         fprintf(file, "%s\n", inputStr);
-        fprintf(file, "%s", themeStr);
+        fprintf(file, "%s\n", themeStr);
+        fprintf(file, "%s", soundStr);
         fclose(file);
     }
 }

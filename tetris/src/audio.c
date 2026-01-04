@@ -13,12 +13,13 @@ Mix_Chunk* gameOverSound = NULL;
 
 bool initAudio(void) {
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("SDL_mixer error: %s\n", Mix_GetError());
         return false;
     }
 
-    theme = Mix_LoadMUS("../assets/audio/theme.mp3");
-    lineSound = Mix_LoadWAV("../assets/audio/line.mp3");
-    gameOverSound = Mix_LoadWAV("../assets/audio/gameover.mp3");
+    theme = Mix_LoadMUS("assets/audio/theme.mp3");
+    lineSound = Mix_LoadWAV("assets/audio/line.mp3");
+    gameOverSound = Mix_LoadWAV("assets/audio/gameover.mp3");
 
     return true;
 }
@@ -44,9 +45,19 @@ void playLineSound(void) {
  * @brief Prehrá zvuk pri konci hry
 */
 void playGameOverSound(void) {
+    stopTheme();
+
     if (gameOverSound != NULL) {
         Mix_PlayChannel(-1, gameOverSound, 0);
     }
+}
+
+
+/**
+ * @brief Zastaví hudbu v pozadí
+*/
+void stopTheme(void) {
+    Mix_HaltMusic();
 }
 
 /**

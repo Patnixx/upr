@@ -15,9 +15,15 @@ typedef enum {
     LIGHT
 } Theme;
 
+typedef enum {
+    SOUND_ON,
+    SOUND_OFF
+} SoundSetting;
+
 typedef struct {
     InputMethod input;
     Theme theme;
+    SoundSetting sound;
 } Settings;
 
 extern Settings settings;

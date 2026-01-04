@@ -6,10 +6,11 @@
 #include "../include/mechs.h"
 #include "../include/settings.h"
 #include "../include/audio.h"
+#include "../include/highscore.h"
 
 int main(int argc, char* argv[]) {
 
-    //SDL_SetHint(SDL_HINT_SHUTDOWN_DBUS_ON_QUIT, "1");
+    SDL_SetHint(SDL_HINT_SHUTDOWN_DBUS_ON_QUIT, "1"); //fake leaks fix
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
     initAudio();
@@ -45,7 +46,9 @@ int main(int argc, char* argv[]) {
     }
 
     Settings settings;
+    HighScores scores;
     loadSettings(&settings, "assets/txt/settings.txt");
+    loadHighScores(&scores);
 
     //colors
     SDL_Color text;
@@ -69,12 +72,13 @@ int main(int argc, char* argv[]) {
     MenuButton menuBtn = {{200,520,200,60},{0,0,160,255},"MENU"};
 
     //settings btns & state
-    MenuButton inputBtn = {{200,180,200,60},{160,160,0,255}, ""};
-    MenuButton themeBtn = {{200,300,200,60},{160,0,160,255}, ""};
+    MenuButton inputBtn = {{200,440,200,60},{160,160,0,255}, ""};
+    MenuButton themeBtn = {{200,520,200,60},{160,0,160,255}, ""};
+    MenuButton soundBtn = {{200,600,200,60},{160,160,160,255}, ""};
 
     strcpy(inputBtn.text, settings.input == ARROWS ? "ARROWS" : "WASD");
     strcpy(themeBtn.text, settings.theme == DARK ? "DARK" : "LIGHT");
-
+    strcpy(soundBtn.text, settings.sound == SOUND_ON ? "SOUND ON" : "SOUND OFF");
 
     State state = MENU;
 
@@ -100,13 +104,11 @@ int main(int argc, char* argv[]) {
                     state = GAME;
                     initCells();
                     spawnBlock();
+                    if(settings.sound == SOUND_ON) playTheme();
                     //bugfix
                     if (!canMove(&current, current.x, current.y)) {
-                        FILE *f = fopen("highscore.txt", "w");
-                        if (f) {
-                            fprintf(f, "Score: %d\n", score);
-                            fclose(f);
-                        }
+                        compareHighScore(score, &scores);
+                        saveHighScores(&scores);
                         state = GAMEOVER;
                     } else state = GAME;
                 }
@@ -135,6 +137,17 @@ int main(int argc, char* argv[]) {
                         settings.theme = DARK;
                     }
                     strcpy(themeBtn.text, settings.theme == DARK ? "DARK" : "LIGHT");
+                    saveSettings(&settings, "assets/txt/settings.txt");
+                }
+
+                if (buttonClicked(&soundBtn, &event)) {
+                    //toggle sound setting
+                    if (settings.sound == SOUND_ON) {
+                        settings.sound = SOUND_OFF;
+                    } else {
+                        settings.sound = SOUND_ON;
+                    }
+                    strcpy(soundBtn.text, settings.sound == SOUND_ON ? "SOUND ON" : "SOUND OFF");
                     saveSettings(&settings, "assets/txt/settings.txt");
                 }
 
@@ -167,7 +180,10 @@ int main(int argc, char* argv[]) {
                 {
                     //misc
                     case SDLK_SPACE: dropBlock(&current); break;
-                    case SDLK_ESCAPE: state = MENU; break;
+                    case SDLK_ESCAPE: 
+                        state = MENU; 
+                        stopTheme();
+                        break;
                 }
             }
 
@@ -202,7 +218,6 @@ int main(int argc, char* argv[]) {
 
         //menu state mimo event loop
         if (state == MENU) {
-            playTheme();
             renderText(renderer, massiveFont, "TETRES", text, 160, 100);
             renderButton(renderer, font, &playBtn);
             renderButton(renderer, font, &settingsBtn);
@@ -211,17 +226,25 @@ int main(int argc, char* argv[]) {
 
         //setting state mimo event loop
         if (state == SETTINGS) {
-            playTheme();
-            renderText(renderer, massiveFont, "SETTINGS", text, 120, 50);
+            renderText(renderer, massiveFont, "SETTINGS", text, 120, 100);
             renderButton(renderer, font, &inputBtn);
             renderButton(renderer, font, &themeBtn);
+            renderButton(renderer, font, &soundBtn);
             renderButton(renderer, font, &backBtn);
         }
 
         //gameover state mimo event loop
         if (state == GAMEOVER) {
-            playGameOverSound();
-            renderText(renderer, largeFont, "GAME OVER", text, 195, 200);
+            if(settings.sound == SOUND_ON) playGameOverSound();
+            renderText(renderer, largeFont, "GAME OVER", text, 195, 100);
+            renderText(renderer, font, "High Scores:", text, 200, 200);
+            char hsText[64];
+            sprintf(hsText, "1. %d", scores.t1);
+            renderText(renderer, font, hsText, text, 200, 250);
+            sprintf(hsText, "2. %d", scores.t2);
+            renderText(renderer, font, hsText, text, 200, 300);
+            sprintf(hsText, "3. %d", scores.t3);
+            renderText(renderer, font, hsText, text, 200, 350);
             renderButton(renderer, font, &playAgainBtn);
             renderButton(renderer, font, &menuBtn);
             renderButton(renderer, font, &quitBtn);
@@ -230,14 +253,11 @@ int main(int argc, char* argv[]) {
         //game state mimo event loop
         if (state == GAME) {
             updateFall();
-            checkLines();
+            checkLines(settings);
 
             if (!canMove(&current, current.x, current.y)) {
-                FILE *f = fopen("highscore.txt", "w");
-                if (f) {
-                    fprintf(f, "Score: %d\n", score);
-                    fclose(f);
-                }
+                compareHighScore(score, &scores);
+                saveHighScores(&scores);
                 state = GAMEOVER;
             }
 
@@ -278,7 +298,6 @@ int main(int argc, char* argv[]) {
     }
 
     //destroy sdl objects
-    if (scoreTexture) SDL_DestroyTexture(scoreTexture);
     TTF_CloseFont(font);
     TTF_CloseFont(largeFont);
     TTF_CloseFont(massiveFont);

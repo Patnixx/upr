@@ -1,5 +1,6 @@
 #include "../include/mechs.h"
 #include "../include/audio.h"
+#include "../include/settings.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -267,7 +268,7 @@ void showNextBlock(SDL_Renderer* renderer, int startX, int startY) {
 /** 
  * @brief Skontroluje a odstráni plné riadky na hracej ploche, aktualizuje skóre
 */
-void checkLines(void) {
+void checkLines(Settings settings) {
     for (int y = CELLS_Y - 1; y > 0; y--) {
         bool lineFull = true;
         for (int x = 0; x < CELLS_X; x++) {
@@ -288,7 +289,7 @@ void checkLines(void) {
             }
             score += 100;
             y++;
-            playLineSound();
+            if(settings.sound == SOUND_ON) playLineSound();
         }
     }
 }

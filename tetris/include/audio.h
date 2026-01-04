@@ -9,5 +9,6 @@ void playTheme(void);
 void playLineSound(void);
 void playGameOverSound(void);
 void cleanUpAudio(void);
+void stopTheme(void);
 
 #endif
